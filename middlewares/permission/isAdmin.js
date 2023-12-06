@@ -17,6 +17,9 @@ module.exports = (req, res, next) => {
     if (payload.role !== "admin") {
       return res.status(401).json({ message: "You are not admin" });
     } else {
+      // передаем прочитанную информацию в запросе и передаем дальше
+      req.currentUser = payload;
+
       next();
     }
   } catch (e) {

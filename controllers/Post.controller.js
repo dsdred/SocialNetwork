@@ -3,8 +3,9 @@ const post = require("../models/post.models");
 class PostController {
   async create(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const { content } = req.body;
       await post.create({
         content,
@@ -47,7 +48,7 @@ class PostController {
 
   async delete(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
 
       const { id } = req.body;
       if (payload.role === "admin") {

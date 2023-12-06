@@ -63,9 +63,16 @@ class ProfileController {
 
   async update(req, res) {
     try {
-      const { id, name, surname, email } = req.body;
+      const payload = req.currentUser;
+      const profileId = payload.id;
+
+      const { name, surname, email } = req.body;
       const profileData = await profile
-        .findOneAndUpdate({ _id: id }, { name, surname, email }, { new: true })
+        .findOneAndUpdate(
+          { _id: profileId },
+          { name, surname, email },
+          { new: true }
+        )
         .select("_id name surname email role active");
       res.json(profileData);
     } catch (e) {
@@ -123,9 +130,9 @@ class ProfileController {
 
   async getFull(req, res) {
     try {
-      const payload = req.locals.payload;
-
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const profileList = await profile
         .findOne({ _id: profileId })
         .select("_id name surname email role active");
@@ -138,9 +145,9 @@ class ProfileController {
 
   async getInfo(req, res) {
     try {
-      const payload = req.locals.payload;
-
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const profileList = await profile
         .findOne({ _id: profileId })
         .select("name, surname");

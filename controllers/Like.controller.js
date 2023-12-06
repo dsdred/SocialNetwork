@@ -3,8 +3,9 @@ const like = require("../models/like.models");
 class LikeController {
   async create(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const { post_id } = req.body;
       await like.create({
         post_id,
@@ -30,8 +31,9 @@ class LikeController {
 
   async delete(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const { id } = req.body;
       const result = await like.findOneAndDelete({
         _id: id,

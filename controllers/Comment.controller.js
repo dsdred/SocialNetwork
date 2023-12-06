@@ -3,8 +3,9 @@ const comment = require("../models/comment.models");
 class CommentController {
   async create(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const { post_id, content } = req.body;
       await comment.create({
         post_id,
@@ -33,8 +34,9 @@ class CommentController {
 
   async delete(req, res) {
     try {
-      const payload = req.locals.payload;
+      const payload = req.currentUser;
       const profileId = payload.id;
+
       const { id } = req.body;
       const result = await comment.findOneAndDelete({
         _id: id,

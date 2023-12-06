@@ -18,9 +18,8 @@ module.exports = function (req, res, next) {
     const payload = jwt.verify(data[1], process.env.SECRET_KEY);
 
     if (successRoles.includes(payload.role)) {
-      req.locals = {
-        payload: payload,
-      };
+      // передаем прочитанную информацию в запросе и передаем дальше
+      req.currentUser = payload;
 
       next();
     } else {
